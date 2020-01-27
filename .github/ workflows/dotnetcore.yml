@@ -1,0 +1,208 @@
+name: .NET Coreusing System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace codewars
+{
+    class Program
+    {
+        class Student
+        {
+           
+            public string surname;
+            public string phoneNumber;
+            public string dateOfBirth;
+            
+
+            public Student(string surname, string phoneNumber, string dateOfBirth)
+            {
+                this.surname = surname;
+                this.phoneNumber = phoneNumber;
+                this.dateOfBirth = dateOfBirth;
+            }
+        }
+
+        class DataBase
+        {
+            public List<Student> students;
+            
+            public DataBase()
+            {
+                students = new List<Student>();
+            }
+            
+            public void SetData(Student student)
+            {
+                students.Add(student);
+            }
+            public int RemoveDataLikeSurname(string surname)
+            {
+                var deleteStudentCount = students.RemoveAll(student => student.surname == surname);
+                return deleteStudentCount;
+            }
+            public void SortLikeSurname()
+            {
+                var sortedStudents = from u in students
+                                    orderby u.surname
+                                    select u;
+
+                foreach (Student student in sortedStudents)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(student.surname);
+                    Console.WriteLine(student.phoneNumber);
+                    Console.WriteLine(student.dateOfBirth);
+                    Console.WriteLine();
+                }
+                Console.ReadLine();
+            }
+            public void SortLikeDataBirth()
+            {
+                var sortedSurname = from u in students
+                                    orderby u.dateOfBirth
+                                    select u;
+                foreach (Student u in sortedSurname)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(u.surname);
+                    Console.WriteLine(u.phoneNumber);
+                    Console.WriteLine(u.dateOfBirth);
+                    Console.WriteLine(); 
+                }
+                Console.ReadLine();
+            }
+            public void SortLikeNumberPhone()
+            {
+                var sortedSurname = from u in students
+                                    orderby u.phoneNumber
+                                    select u;
+                foreach (Student u in sortedSurname)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(u.surname);
+                    Console.WriteLine(u.phoneNumber);
+                    Console.WriteLine(u.dateOfBirth);
+                    Console.WriteLine();
+                }
+                Console.ReadLine();
+            }
+            public void PrintList()
+            {
+                foreach (Student n in students)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(n.surname);
+                    Console.WriteLine(n.phoneNumber);
+                    Console.WriteLine(n.dateOfBirth);
+                    Console.WriteLine();
+                }
+                Console.ReadLine();
+            }
+                
+            
+
+            public void Menu()
+            {
+                int menu = int.Parse(Console.ReadLine());
+                switch (menu)
+                {
+                    case 1:// добавление студента в список
+                        Console.WriteLine("Введите фамилию, номер телефона, дату рождения");
+                        string surname = Console.ReadLine();
+                        string phoneNumber = Console.ReadLine();
+                        string dataBurth = Console.ReadLine();
+                        Student addstudent = new Student(surname, phoneNumber, dataBurth);
+                        SetData(addstudent);
+                        PrintList();
+                        break;
+                    case 2:// удаление студента из списка 
+                        Console.WriteLine("Введите фамилию");
+                        var surnameFromReadLine = Console.ReadLine();
+                        var deleteStudentCount = RemoveDataLikeSurname(surnameFromReadLine);
+                        if (deleteStudentCount != 0)
+                        {
+                            Console.WriteLine("Удалено");
+                            PrintList();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Совпадений нет");
+                            PrintList();
+                        }
+                            break;
+                    case 3://Поиск по параметрам: фамилия, телефон, дата рождения
+                        Console.WriteLine("поиск: ");
+                        var ParametrFromReadLine  = Console.ReadLine();
+                        foreach (var student in students)
+                        {
+                            if (student.surname == ParametrFromReadLine)
+                            {
+                                Console.WriteLine(student.surname);
+                                Console.WriteLine(student.dateOfBirth);
+                                Console.WriteLine(student.phoneNumber);
+                                Console.ReadLine();
+                            }
+                            else if (student.dateOfBirth == ParametrFromReadLine)
+                            {
+                                Console.WriteLine(student.surname);
+                                Console.WriteLine(student.dateOfBirth);
+                                Console.WriteLine(student.phoneNumber);
+                                Console.ReadLine();
+                            }
+                            else if (student.phoneNumber == ParametrFromReadLine)
+                            {
+                                Console.WriteLine(student.surname);
+                                Console.WriteLine(student.dateOfBirth);
+                                Console.WriteLine(student.phoneNumber);
+                                Console.ReadLine();
+                            }
+                            else
+                                break;                               
+                        }
+                        break;
+                    case 4:// сортировать список по параметру  
+                        Console.WriteLine("сортировать список по параметру: 1 - дата рождения, 2 - фамилия, 3 - номер телефона)");
+                        string chois = Console.ReadLine();
+                        switch (chois)
+                        {
+                            case "1":
+                                SortLikeDataBirth();
+                                break;
+                            case "2":
+                                SortLikeSurname();
+                                break;
+                            case "3":
+                                SortLikeNumberPhone();
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+
+    
+        static void Main(string[] args)
+        {
+
+            Student Pupin = new Student("Pupin", "89005553535", "19.12.1998");
+            Student Lupin = new Student("Lupin", "89278874119", "20.12.1997");
+            Student Bibin = new Student("Bibin", "89124413243", "09.10.1999");
+            Student Bobin = new Student("Bobin", "89768678566", "01.12.2000");
+            DataBase dataBase = new DataBase();
+            dataBase.SetData(Pupin);
+            dataBase.SetData(Lupin);
+            dataBase.SetData(Bibin);
+            dataBase.SetData(Bobin);
+
+
+            Console.WriteLine("Что сделать?");
+            Console.WriteLine("нажмите 1, чтобы Добавить студента");
+            Console.WriteLine("нажмите 2, чтобы Удалить студента");
+            Console.WriteLine("нажмите 3, чтобы Найти студента");
+            Console.WriteLine("нажмите 4, чтобы Отсортировать список");
+            dataBase.Menu();
+        }
+    }
+}
